@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Pruebas
 {
@@ -24,7 +25,7 @@ namespace Pruebas
             Modelo modelo = new Modelo();
             Contacto contacto = new Contacto();
 
-            string[] arrayDatos = new string[9];
+            List<List<String>> listaDatos = new List<List<String>>();
 
             Console.Clear();
 
@@ -50,8 +51,8 @@ namespace Pruebas
                 {
                     if (opcion == "1")
                     {
-                        arrayDatos = contacto.Inicio();
-                        modelo.CogerDatos(arrayDatos);
+                        listaDatos = contacto.Inicio();
+                        modelo.CogerDatos(listaDatos);
                     }
                     if (opcion == "2")
                     {

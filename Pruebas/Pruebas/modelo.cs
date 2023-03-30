@@ -20,17 +20,41 @@ namespace Pruebas
         public string sector { get; set; }
         public string nEmpleados { get; set; }
         public string tipo { get; set; }
-        public string notas { get; set; }
+        public string mascota { get; set; }
 
+        public string notas;
+        public int i = 0;
 
+        public List<String> listaNotas = new List<String>();
         public List<Modelo> listOfUsers = new List<Modelo>();
 
         /**
-         * Método de la clase contacto que añade los datos pasados en el array a la lista
+         * Método de la clase contacto que añade los datos pasados en la lista a la otra lista
          */
-        public void CogerDatos(string[] arrayDatos)
+        public void CogerDatos(List<List<String>> listaDatos)
         {
-            listOfUsers.Add(new Modelo() { nombre = arrayDatos[0], apellidos = arrayDatos[1], dni = arrayDatos[2], telefono = arrayDatos[3], sexo = arrayDatos[4], edad = arrayDatos[5], sector = arrayDatos[6], nEmpleados = arrayDatos[7], tipo = arrayDatos[8], notas = arrayDatos[9] });
+            bool repetido = true;
+            var buscarDni = listOfUsers.Where(w => w.dni == listaDatos[0][2]).ToList();
+
+            foreach (var item in buscarDni)
+            {
+                if (item.dni == listaDatos[0][2])
+                repetido = false;
+            }
+
+            if (repetido)
+            {
+                listOfUsers.Add(new Modelo() { nombre = listaDatos[0][0], apellidos = listaDatos[0][1], dni = listaDatos[0][2], telefono = listaDatos[0][3], sexo = listaDatos[0][4], edad = listaDatos[0][5], sector = listaDatos[0][6], nEmpleados = listaDatos[0][7], tipo = listaDatos[0][8], mascota = listaDatos[0][9], listaNotas = listaDatos[1].ToList() });
+            }
+            else
+            {
+                Console.WriteLine("\n-------------------------------------------");
+                Console.WriteLine("El DNI introducido ya está registrado");
+                Console.WriteLine("-------------------------------------------");
+            }
+
+            listaDatos[0].Clear();
+            listaDatos[1].Clear();
         }
 
         /**
@@ -49,6 +73,7 @@ namespace Pruebas
                 {
                     Console.WriteLine("Sexo: " + item.sexo);
                     Console.WriteLine("Edad: " + item.edad);
+                    Console.WriteLine("gato/perro: " + item.mascota);
                     Console.WriteLine("TIPO: PERSONA");
                 }
                 else
@@ -57,13 +82,17 @@ namespace Pruebas
                     Console.WriteLine("Número Empleados: " + item.nEmpleados);
                     Console.WriteLine("TIPO: EMPRESA");
                 }
-                Console.WriteLine("Teléfono: " + item.notas);
+                Console.WriteLine("Notas: ");    
+                for (int i = 0; item.listaNotas.Count > i; i++)
+                {
+                    Console.WriteLine("\tNotas["+ i +"]: " + item.listaNotas[i]);
+                }
                 Console.WriteLine("------------------------");
             }
         }
 
         /**
-         * Método que busca un objeto de la lista por le dni y lo borra
+         * Método que busca un objeto de la lista por el dni y lo borra
          */
         public void BorrarDatos()
         {
@@ -123,6 +152,11 @@ namespace Pruebas
                     Console.WriteLine("Número Empleados: " + item.nEmpleados);
                     Console.WriteLine("TIPO: EMPRESA");
                 }
+                Console.WriteLine("Notas: ");
+                for (int i = 0; item.listaNotas.Count > i; i++)
+                {
+                    Console.WriteLine("\tNotas[" + i + "]: " + item.listaNotas[i]);
+                }
                 Console.WriteLine("------------------------");
             }
         }
@@ -152,12 +186,13 @@ namespace Pruebas
                     Console.WriteLine("5.Cambiar sector");
                     Console.WriteLine("6.Cambiar nº de Empleados");
                 }
-                Console.WriteLine("7.Salir");
+                Console.WriteLine("7.Añadir notas");
+                Console.WriteLine("8.Salir");
                 Console.WriteLine("----------------------------");
 
                 string opciobEdicion = Console.ReadLine();
 
-                if (opciobEdicion != "1" && opciobEdicion != "2" && opciobEdicion != "3" && opciobEdicion != "4" && opciobEdicion != "5" && opciobEdicion != "6" && opciobEdicion != "7")
+                if (opciobEdicion != "1" && opciobEdicion != "2" && opciobEdicion != "3" && opciobEdicion != "4" && opciobEdicion != "5" && opciobEdicion != "6" && opciobEdicion != "7" && opciobEdicion != "8")
                 {
                     Console.Clear();
                     Console.WriteLine("\n-------------------------------");
@@ -229,6 +264,26 @@ namespace Pruebas
                         }
                     }
                     if (opciobEdicion == "7")
+                    {
+                        Console.Clear();
+                        Console.WriteLine("\nIntroduce n cuando quieras dejar de añadir notas");
+                        while (true)
+                        {
+                            Console.WriteLine("\nNota[" + i++ + "]: ");
+                            notas = Console.ReadLine();
+
+                            if (notas == "n")
+                            {
+                                break;
+                            }
+
+                            foreach(var nuevo in listOfUsers)
+                            {
+                                nuevo.listaNotas.Add(notas);
+                            }
+                        }
+                    }
+                    if (opciobEdicion == "8")
                     {
                         Console.Clear();
                         Console.WriteLine("\n-------------------------------------------------------------");
